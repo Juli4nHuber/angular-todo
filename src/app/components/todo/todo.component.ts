@@ -4,6 +4,7 @@ import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPencil, faTrash, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { CommonModule } from '@angular/common';
+import { isNgContainer } from '@angular/compiler';
 
 @Component({
   selector: 'app-todo',
@@ -39,24 +40,31 @@ export class TodoComponent {
       isEditing: false
     }];
 
-  todoListFilter: todoModel[] = this.todoList;
-
   filter: filterType = 'all';
+
+  constructor(){
+    let localTodoList: todoModel[] = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')!) : [];
+    if(localTodoList){
+      this.todoList = localTodoList;
+    }
+  }
+
 
   changeFilter(filter: filterType){
     this.filter = filter;
     if(filter == 'active'){
-      return this.todoListFilter = this.todoList.filter((todo) => {
+      return this.todoList = this.todoList.filter((todo) => {
         return !todo.isCompleted;
       })
     }
     if(filter == 'completed'){
-      return this.todoListFilter = this.todoList.filter((todo) => {
+      return this.todoList = this.todoList.filter((todo) => {
         return todo.isCompleted;
       })
     }
-    return this.todoListFilter = this.todoList;
+    return this.todoList = this.todoList;
   }
+
 
   newTodo = new FormControl('', [Validators.required]);
   addTodo(){
@@ -68,8 +76,9 @@ export class TodoComponent {
         isCompleted: false,
         isEditing: false
       })
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
+      this.newTodo.setValue('');
     }
-    this.newTodo.setValue('');
   }
 
   updateTodoForm = new FormControl('', [Validators.required]);
@@ -80,14 +89,24 @@ export class TodoComponent {
       if (index !== -1) {
         this.todoList[index].title = updateTodoTitle;
         this.todoList[index].isEditing = false;
+        localStorage.setItem('todoList', JSON.stringify(this.todoList));
       }
     }
   }
   
+  completedTodo(id: number, isCompleted: boolean){
+    const index = this.todoList.findIndex(todo => todo.id === id);
+    if (index !== -1) {
+      this.todoList[index].isCompleted = isCompleted;
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
+    }
+  }
+
   deleteTodo(id: number){
     const index = this.todoList.findIndex(todo => todo.id === id);
     if (index !== -1) {
       this.todoList.splice(index, 1);
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
     }
   }
 }

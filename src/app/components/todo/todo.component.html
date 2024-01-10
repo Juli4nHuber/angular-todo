@@ -12,7 +12,7 @@
     </div>
 
     <ul class="todoList">
-    @for(todo of todoListFilter; track todo.id){
+    @for(todo of todoList; track todo.id){
         @if(todo.isEditing){
             <li class="todo-editing">
                 <input type="text" placeholder="Editar tarea" (keydown.enter)="updateTodo(todo.id)" [formControl]="updateTodoForm">
@@ -20,7 +20,7 @@
             </li>
         }@else{
             <li class="todo" [class.completed]="todo.isCompleted">
-                <input type="checkbox" [checked]="todo.isCompleted" (change)="todo.isCompleted = !todo.isCompleted">
+                <input type="checkbox" [checked]="todo.isCompleted" (change)="completedTodo(todo.id, !todo.isCompleted)">
                 <label for="">{{todo.title}}</label>
                 @if(!todo.isCompleted){<button (click)="todo.isEditing = true"><fa-icon [icon]="faPencil"/></button>}
                 <button (click)="deleteTodo(todo.id)"><fa-icon [icon]="faTrash"/></button>
