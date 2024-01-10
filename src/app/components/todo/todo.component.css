@@ -1,0 +1,54 @@
+*{
+    @apply text-white
+}
+section{
+    @apply bg-stone-900 p-8 w-fit mt-8 mx-auto rounded-lg;
+}
+h1{
+    @apply text-3xl font-bold text-center mb-8;
+}
+.new-todo{
+    @apply relative flex items-center rounded-lg overflow-hidden;
+}
+.todo-editing{
+    @apply relative flex items-center rounded-lg overflow-hidden p-0;
+}
+.new-todo input, .todo-editing input {
+    @apply w-64 p-2 rounded-lg bg-stone-700 outline-none;
+}
+.new-todo button, .todo-editing button {
+    @apply absolute right-0 bg-stone-500 text-lg font-black h-full px-2;
+}
+.new-todo button:disabled, .todo-editing button:disabled {
+    @apply bg-stone-800 text-stone-600;
+}
+.filters{
+    @apply flex justify-end gap-2 my-5;
+}
+.filters button{
+    @apply px-2 rounded-lg bg-stone-700;
+}
+.filters button.active{
+    @apply bg-stone-500;
+}
+.todoList {
+    @apply flex flex-col gap-2;
+}
+.todoList li.todo {
+    @apply flex bg-stone-700 px-4 py-2 rounded-lg items-center gap-2;
+}
+.todoList li.todo.completed {
+    @apply bg-green-700;
+}
+.todoList li.todo label {
+    @apply flex-1;
+}
+.todList li.todo:hover button{
+    @apply block;
+}
+.todoList li.todo button{
+    @apply text-xs;
+}
+.todoList li.todo input[type="checkbox"]{
+    @apply w-4 h-4 cursor-pointer;
+}

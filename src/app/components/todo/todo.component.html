@@ -1,0 +1,31 @@
+<section>
+    <h1>TODO APP</h1>
+    <div class="new-todo">
+        <input type="text" placeholder="Escribe una nueva tarea" (keydown.enter)="addTodo()" [formControl]="newTodo">
+        <button [disabled]="!newTodo.valid" (click)="addTodo()"><fa-icon [icon]="faPlus"/></button>
+    </div>
+
+    <div class="filters">
+        <button (click)="changeFilter('all')" [class.active]="filter == 'all'">Todas</button>
+        <button (click)="changeFilter('active')" [class.active]="filter == 'active'">Activas</button>
+        <button (click)="changeFilter('completed')" [class.active]="filter == 'completed'">Completadas</button>
+    </div>
+
+    <ul class="todoList">
+    @for(todo of todoListFilter; track todo.id){
+        @if(todo.isEditing){
+            <li class="todo-editing">
+                <input type="text" placeholder="Editar tarea" (keydown.enter)="updateTodo(todo.id)" [formControl]="updateTodoForm">
+                <button [disabled]="!updateTodoForm.valid" (click)="updateTodo(todo.id)"><fa-icon [icon]="faCheck"/></button>
+            </li>
+        }@else{
+            <li class="todo" [class.completed]="todo.isCompleted">
+                <input type="checkbox" [checked]="todo.isCompleted" (change)="todo.isCompleted = !todo.isCompleted">
+                <label for="">{{todo.title}}</label>
+                @if(!todo.isCompleted){<button (click)="todo.isEditing = true"><fa-icon [icon]="faPencil"/></button>}
+                <button (click)="deleteTodo(todo.id)"><fa-icon [icon]="faTrash"/></button>
+            </li>
+        }
+    } 
+    </ul> 
+</section>
