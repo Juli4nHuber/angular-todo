@@ -12,7 +12,7 @@
     </div>
 
     <ul class="todoList">
-    @for(todo of todoList; track todo.id){
+    @for(todo of todoListFilter; track todo.id){
         @if(todo.isEditing){
             <li class="todo-editing">
                 <input type="text" placeholder="Editar tarea" (keydown.enter)="updateTodo(todo.id)" [formControl]="updateTodoForm">

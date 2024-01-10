@@ -41,28 +41,28 @@ export class TodoComponent {
     }];
 
   filter: filterType = 'all';
+  todoListFilter: todoModel[] = this.todoList;
 
   constructor(){
     let localTodoList: todoModel[] = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')!) : [];
-    if(localTodoList){
-      this.todoList = localTodoList;
+    if(localTodoList && localTodoList.length != 0){
+      this.todoListFilter = this.todoList = localTodoList;
     }
   }
-
 
   changeFilter(filter: filterType){
     this.filter = filter;
     if(filter == 'active'){
-      return this.todoList = this.todoList.filter((todo) => {
+      return this.todoListFilter = this.todoList.filter((todo) => {
         return !todo.isCompleted;
       })
     }
     if(filter == 'completed'){
-      return this.todoList = this.todoList.filter((todo) => {
+      return this.todoListFilter = this.todoList.filter((todo) => {
         return todo.isCompleted;
       })
     }
-    return this.todoList = this.todoList;
+    return this.todoListFilter = this.todoList;
   }
 
 
@@ -78,6 +78,7 @@ export class TodoComponent {
       })
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
       this.newTodo.setValue('');
+      this.changeFilter(this.filter);
     }
   }
 
@@ -99,6 +100,7 @@ export class TodoComponent {
     if (index !== -1) {
       this.todoList[index].isCompleted = isCompleted;
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
+      this.changeFilter(this.filter);
     }
   }
 
@@ -108,5 +110,6 @@ export class TodoComponent {
       this.todoList.splice(index, 1);
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
     }
+    this.changeFilter(this.filter);
   }
 }
